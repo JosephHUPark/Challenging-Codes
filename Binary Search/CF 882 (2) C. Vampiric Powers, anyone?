@@ -1,0 +1,54 @@
+#https://codeforces.com/contest/1847/problem/C
+
+#include <bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define ll long long
+#define ull unsigned long long
+//#define endl puts("")
+//#define endl '\n'
+#define pr printf
+#define sc scanf
+#define scd(x) scanf("%d", &(x))
+#define scdd(x, y) scanf("%d%d", &(x), &(y))
+#define scddd(x, y, z) scanf("%d%d%d", &(x), &(y), &(z))
+#define scdddd(x, y, z, u) scanf("%d%d%d%d", &(x), &(y), &(z), &(u))
+#define scs(s) scanf("%s", s)
+#define scss(s1, s2) scanf("%s%s", s1, s2)
+#define frein(s) freopen(s, "r", stdin)
+#define freout(s) freopen(s, "w", stdout)
+#define mem(a, k) memset(a, k, sizeof(a))
+#define rep(i, a, b) for (ll i = (a); i <= (b); i++)
+#define per(i, a, b) for (ll i = (a); i >= (b); i--)
+#define cf                                                                     \
+    int _;                                                                     \
+    cin >> _;                                                                  \
+    while (_--) {                                                              \
+        solve();                                                               \
+    }
+#define ios                                                                    \
+    ios::sync_with_stdio(false);                                               \
+    cin.tie(0);                                                                \
+    cout.tie(0);
+const int INF = 0x3f3f3f3f;
+const double eps = 1e-10;
+void solve() {
+    int n, sum, ans = 0, x;
+    cin >> n;
+    set<int> pre;
+    pre.insert(0);
+    rep(i, 0, n - 1) {
+        cin >> x;
+        sum = i == 0 ? x : sum ^ x;
+        pre.insert(sum);
+        for (auto it : pre) {
+            ans = max(ans, sum ^ it);
+        }
+    }
+    cout << ans << endl;
+}
+int main() {
+    ios;
+    cf;
+    return 0;
+}
