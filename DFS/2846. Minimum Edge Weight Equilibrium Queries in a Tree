@@ -1,0 +1,62 @@
+lass Solution {
+    int s[10000][26],f[10000][14],d[10000],m,h[10000],ne[20005],p[20005],w[20005],t[26];
+    void dfs(int x)
+    {
+        int i;
+        for(i=1;1<<i<=d[x];i++)f[x][i]=f[f[x][i-1]][i-1];
+        for(i=h[x];i;i=ne[i])if(p[i]!=f[x][0])
+        {
+            f[p[i]][0]=x;
+            copy(s[x],s[x]+26,s[p[i]]);
+            s[p[i]][w[i]]++;
+            d[p[i]]=d[x]+1;
+            dfs(p[i]);
+        }
+    }
+    int lca(int x,int y)
+    {
+        int i;
+        if(d[x]<d[y])swap(x,y);
+        if(d[x]!=d[y])for(i=13;~i;i--)if(d[x]-d[y]>>i&1)x=f[x][i];
+        if(x!=y)
+        {
+            for(i=13;~i;i--)if(f[x][i]!=f[y][i])
+            {
+                x=f[x][i];
+                y=f[y][i];
+            }
+            x=f[x][0];
+        }
+        return x;
+    }
+public:
+    vector<int> minOperationsQueries(int n, vector<vector<int>>& edges, vector<vector<int>>& queries) {
+        fill(h,h+n,0);
+        for(auto &e:edges)
+        {
+            p[++m]=e[1];
+            ne[m]=h[e[0]];
+            w[m]=e[2]-1;
+            h[e[0]]=m;
+            p[++m]=e[0];
+            ne[m]=h[e[1]];
+            w[m]=e[2]-1;
+            h[e[1]]=m;
+        }
+        memset(f,0,sizeof(f));
+        memset(d,0,sizeof(d));
+        memset(s[0],0,sizeof(s[0]));
+        dfs(0);
+        vector<int> ans;
+        int i,j,k,l;
+        for(auto &q:queries)
+        {
+            i=q[0];
+            j=q[1];
+            k=lca(i,j);
+            for(l=0;l<26;l++)t[l]=s[i][l]+s[j][l]-(s[k][l]<<1);
+            ans.push_back(d[i]+d[j]-(d[k]<<1)-*max_element(t,t+26));
+        }
+        return ans;
+    }
+};
